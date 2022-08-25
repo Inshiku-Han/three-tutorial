@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Astro Three">
+	<main>
+		<div id="canvas-container"></div>
+	</main>
+	<script>
+		import * as THREE from "three";
+
+		const container = document.getElementById(
+			"canvas-container"
+		) as HTMLDivElement;
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(
+			75,
+			window.innerWidth / window.innerHeight,
+			0.1,
+			1000
+		);
+
+		const renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		container.appendChild(renderer.domElement);
+	</script>
+</Layout>
+
+<style>
+
+</style>
