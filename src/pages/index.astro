@@ -1,8 +1,47 @@
 ---
-import Canvas1 from "../components/Canvas1.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Astro Three">
-	<Canvas1 />
-</Layout>
+<Layout />
+
+<script>
+    import * as THREE from "three";
+    import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
+    const renderer = new THREE.WebGLRenderer();
+
+    const scene = new THREE.Scene();
+
+    // cemera에는 Perspective와 Orthographic 두가지가 있다.
+    const camera = new THREE.PerspectiveCamera(
+        75, // field of view(각도)
+        window.innerWidth / window.innerHeight, // aspect ratio(비율)
+        0.1, // near clipping plane(가까운 평면)
+        1000 // far clipping plane(멀리 있는 평면)
+        // near부터 far 까지를 렌더링
+    );
+    camera.position.set(0, 2, 5);
+
+    // 궤도. 마우스로 드래그해서 카메라를 이동시킬 수 있다.
+    const orbit = new OrbitControls(camera, renderer.domElement);
+    orbit.update();
+
+    // 축을 시각화하여 보여준다. 인자는 크기
+    const axesHelper = new THREE.AxesHelper(5);
+    scene.add(axesHelper);
+
+    // 박스생성
+    const boxGemometry = new THREE.BoxGeometry();
+    const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const box = new THREE.Mesh(boxGemometry, boxMaterial);
+    scene.add(box);
+
+    renderer.setAnimationLoop((time) => {
+        box.rotation.x = time / 1000;
+        box.rotation.y = time / 1000;
+        renderer.render(scene, camera);
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    document.body.appendChild(renderer.domElement);
+</script>
