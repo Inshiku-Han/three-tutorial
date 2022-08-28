@@ -6,10 +6,9 @@ import Layout from "../layouts/Layout.astro";
 
 <script>
     import * as THREE from "three";
-    import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-    import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+    import { OrbitControls } from "three-stdlib";
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    const renderer = new THREE.WebGLRenderer();
 
     const scene = new THREE.Scene();
 
@@ -22,46 +21,45 @@ import Layout from "../layouts/Layout.astro";
         // near부터 far 까지를 렌더링
     );
     // camera의 위치 조정(x, y, z)
-    camera.position.set(0, 0, 5);
-    // camera.position.set(-10, 30, 30);
+    camera.position.set(-10, 30, 30);
 
     // 궤도. 마우스로 드래그해서 카메라를 이동시킬 수 있다.
     const orbit = new OrbitControls(camera, renderer.domElement);
     orbit.update();
 
     // 박스생성
-    // const boxGemometry = new THREE.BoxGeometry();
-    // const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    // const box = new THREE.Mesh(boxGemometry, boxMaterial);
-    // scene.add(box);
+    const boxGemometry = new THREE.BoxGeometry();
+    const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const box = new THREE.Mesh(boxGemometry, boxMaterial);
+    scene.add(box);
 
     // 평먼 생성
-    // const planeGemoetry = new THREE.PlaneGeometry(30, 30);
-    // const planeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    // const plane = new THREE.Mesh(planeGemoetry, planeMaterial);
-    // scene.add(plane);
+    const planeGemoetry = new THREE.PlaneGeometry(30, 30);
+    const planeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const plane = new THREE.Mesh(planeGemoetry, planeMaterial);
+    scene.add(plane);
 
     // gltf 로드
-    const loader = new GLTFLoader();
-    loader.load(
-        "/gltf/2022.glb",
-        (gltf) => scene.add(gltf.scene),
-        undefined,
-        (error) => console.error(error)
-    );
+    // const loader = new GLTFLoader();
+    // loader.load(
+    //     "/gltf/out.glb",
+    //     (gltf) => scene.add(gltf.scene),
+    //     undefined,
+    //     (error) => console.error(error)
+    // );
 
     // 축을 시각화하여 보여준다.
-    // const axesHelper = new THREE.AxesHelper(30);
-    // scene.add(axesHelper);
+    const axesHelper = new THREE.AxesHelper(30);
+    scene.add(axesHelper);
 
     // 그리드를 시각화하여 보여준다.
-    // const gridHelper = new THREE.GridHelper(30);
-    // scene.add(gridHelper);
+    const gridHelper = new THREE.GridHelper(30);
+    scene.add(gridHelper);
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setAnimationLoop((time) => {
-        // box.rotation.x = time / 1000;
-        // box.rotation.y = time / 1000;
+        box.rotation.x = time / 1000;
+        box.rotation.y = time / 1000;
         renderer.render(scene, camera);
     });
 
