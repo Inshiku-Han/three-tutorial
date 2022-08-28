@@ -14,13 +14,14 @@ import Layout from "../layouts/Layout.astro";
 
     // cemera에는 Perspective와 Orthographic 두가지가 있다.
     const camera = new THREE.PerspectiveCamera(
-        75, // field of view(각도)
+        45, // field of view(각도)
         window.innerWidth / window.innerHeight, // aspect ratio(비율)
         0.1, // near clipping plane(가까운 평면)
         1000 // far clipping plane(멀리 있는 평면)
         // near부터 far 까지를 렌더링
     );
-    camera.position.set(0, 2, 5);
+    // camera의 위치 조정(x, y, z)
+    camera.position.set(-10, 30, 30);
 
     // 궤도. 마우스로 드래그해서 카메라를 이동시킬 수 있다.
     const orbit = new OrbitControls(camera, renderer.domElement);
@@ -36,12 +37,17 @@ import Layout from "../layouts/Layout.astro";
     const box = new THREE.Mesh(boxGemometry, boxMaterial);
     scene.add(box);
 
+    const planeGemoetry = new THREE.PlaneGeometry(30, 30);
+    const planeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const plane = new THREE.Mesh(planeGemoetry, planeMaterial);
+    scene.add(plane);
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setAnimationLoop((time) => {
         box.rotation.x = time / 1000;
         box.rotation.y = time / 1000;
         renderer.render(scene, camera);
     });
-    renderer.setSize(window.innerWidth, window.innerHeight);
 
     document.body.appendChild(renderer.domElement);
 </script>
