@@ -2,11 +2,18 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout />
+<Layout>
+    <div id="canvas-container"></div>
+</Layout>
 
 <script>
     import * as THREE from "three";
     import { OrbitControls } from "three-stdlib";
+    import * as dat from "dat.gui";
+
+    const container = document.querySelector(
+        "#canvas-container"
+    ) as HTMLDivElement;
 
     const renderer = new THREE.WebGLRenderer();
 
@@ -27,17 +34,32 @@ import Layout from "../layouts/Layout.astro";
     const orbit = new OrbitControls(camera, renderer.domElement);
     orbit.update();
 
-    // 박스생성
+    // 정육면체 오브젝트
     const boxGemometry = new THREE.BoxGeometry();
     const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     const box = new THREE.Mesh(boxGemometry, boxMaterial);
     scene.add(box);
 
-    // 평먼 생성
+    // 단면 오브젝트
     const planeGemoetry = new THREE.PlaneGeometry(30, 30);
-    const planeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const planeMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        side: THREE.DoubleSide, // 양면처리
+    });
     const plane = new THREE.Mesh(planeGemoetry, planeMaterial);
+    plane.rotation.x = -0.5 * Math.PI;
     scene.add(plane);
+
+    // 구 오브젝트
+    const sphereGeometry = new THREE.SphereGeometry(4, 50, 50);
+    // 확인 필요
+    const sphereMaterial = new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        wireframe: false,
+    });
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.position.set(-10, 10, 0);
+    scene.add(sphere);
 
     // gltf 로드
     // const loader = new GLTFLoader();
@@ -48,6 +70,7 @@ import Layout from "../layouts/Layout.astro";
     //     (error) => console.error(error)
     // );
 
+    // Development only
     // 축을 시각화하여 보여준다.
     const axesHelper = new THREE.AxesHelper(30);
     scene.add(axesHelper);
@@ -56,12 +79,36 @@ import Layout from "../layouts/Layout.astro";
     const gridHelper = new THREE.GridHelper(30);
     scene.add(gridHelper);
 
+    // props control
+    const gui = new dat.GUI();
+
+    const guiOptions = {
+        sphereColor: "#ffea00",
+        wireframe: false,
+        speed: 0.01,
+    };
+
+    gui.addColor(guiOptions, "sphereColor").onChange((value) => {
+        sphere.material.color.set(value);
+    });
+
+    gui.add(guiOptions, "wireframe").onChange((value) => {
+        sphere.material.wireframe = value;
+    });
+    gui.add(guiOptions, "speed", 0, 0.1);
+
+    let step = 0;
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setAnimationLoop((time) => {
         box.rotation.x = time / 1000;
         box.rotation.y = time / 1000;
+
+        step += guiOptions.speed;
+        sphere.position.y = 10 * Math.abs(Math.sin(step));
+
         renderer.render(scene, camera);
     });
 
-    document.body.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 </script>
