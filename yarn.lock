@@ -2952,7 +2952,7 @@ synckit@^0.7.0:
     "@pkgr/utils" "^2.3.0"
     tslib "^2.4.0"
 
-three-stdlib@^2.14.3:
+three-stdlib@2.14.3:
   version "2.14.3"
   resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.14.3.tgz#785cf927d20b62462d8d7b7b369bca564a66a254"
   integrity sha512-FS2HsQFuGIexhzVRrAzhOHtC5YSkIyauWr3MgT6TSVcNZIVy5r+H9i5+Pjed2Oq4mpe97BufmJd+1Xg5Exh0rA==
