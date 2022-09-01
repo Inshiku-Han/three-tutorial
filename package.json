@@ -10,8 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "three": "0.144.0",
-    "three-stdlib": "2.14.3"
+    "three": "0.144.0"
   },
   "devDependencies": {
     "@types/dat.gui": "0.7.7",
