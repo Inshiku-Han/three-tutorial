@@ -8,11 +8,11 @@ import Layout from "../layouts/Layout.astro";
 
 <script>
   import * as THREE from "three";
+  import { OrbitControls } from "three-stdlib";
   import * as dat from "dat.gui";
-  import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-  const container = document.querySelector(
-    "#canvas-container"
+  const container = document.getElementById(
+    "canvas-container"
   ) as HTMLDivElement;
 
   const renderer = new THREE.WebGLRenderer();

@@ -1,3 +1,3 @@
-# Insik Three
+# Three tutorial
 
 challenge the 3D
